@@ -62,13 +62,13 @@ public class ClienteList extends HttpServlet
                     out.println( String.format( "<td>%s</td>" , cliente.getNombre() ) );
                     out.println( String.format( "<td>%s</td>" , cliente.getApellidoP() ) );
                     out.println( String.format( "<td>%s</td>" , cliente.getApellidoM() ) );
-                    out.println( String.format( "<td>%d/td>" , cliente.getEdad() ) );
-                    out.println( String.format( "<td>/td>"  ) );
+                    out.println( String.format( "<td>%d</td>" , cliente.getEdad() ) );
+                    out.println( String.format( "<td></td>"  ) );
                     out.println("</tr>");
                 }
             }
-            
             out.println("</table>");
+            out.println("<a href=\"AgregaCliente\">Nuevo cliente</a> ");
             out.println("</body>");
             out.println("</html>");
         }

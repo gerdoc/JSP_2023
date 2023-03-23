@@ -6,6 +6,8 @@ package org.gerdoc;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +31,9 @@ public class AgregaCliente extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        String accion = null;
+        try (PrintWriter out = response.getWriter()) 
+        {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -37,7 +41,15 @@ public class AgregaCliente extends HttpServlet {
             out.println("<title>Servlet AgregaCliente</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AgregaCliente at " + request.getContextPath() + "</h1>");
+            accion = request.getParameter("guardar" );
+            if(accion != null && "Guardar".equals(accion) )
+            {
+                guardaCliente( request );
+            }
+            else
+            {
+                imprimirFormulario( out );
+            }
             out.println("</body>");
             out.println("</html>");
         }
@@ -78,8 +90,73 @@ public class AgregaCliente extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-    public String getServletInfo() {
+    public String getServletInfo() 
+    {
         return "Short description";
-    }// </editor-fold>
+    }
 
+    public void imprimirFormulario( PrintWriter out )
+    {
+        
+        
+        out.println("<form id=\"form1\">");
+        out.println("<table border=\"1\">");
+        out.println("<tr>");
+        out.println("<td>Nombre</td><td>");
+        out.println("<input id=\"nombre\" name=\"nombre\" type=\"text\" />");
+        out.println("</td>");
+        out.println("<tr>");
+        out.println("<td>Apellido Paterno</td><td>");
+        out.println("<input id=\"apellidoP\" name=\"apellidoP\" type=\"text\" />");
+        out.println("</td>");
+        out.println("<tr>");
+        out.println("<td>Apellido Materno</td><td>");
+        out.println("<input id=\"apellidoM\" name=\"apellidoM\" type=\"text\" />");
+        out.println("</td>");
+        out.println("<tr>");
+        out.println("<td>Edad</td><td>");
+        out.println("<input id=\"edad\" name=\"edad\" type=\"number\" />");
+        out.println("</td>");
+        out.println("<tr>");
+        out.println("<td colspan=\"2\"><input id=\"guardar\" name=\"guardar\" value=\"Guardar\"  type=\"submit\" /></td>");
+        out.println("</tr>");
+        out.println("</table>");
+        out.println("</form>");           
+    }
+
+    private void guardaCliente(HttpServletRequest request) 
+    {
+        Cliente cliente = new Cliente( );
+        List<Cliente>list = null;
+        cliente.setNombre(request.getParameter("nombre"));
+        cliente.setApellidoP(request.getParameter("apellidoP"));
+        cliente.setApellidoM(request.getParameter("apellidoM"));
+        cliente.setEdad( getCampoInteger( request.getParameter("edad") ) );
+        if( cliente.getApellidoM( ) == null || cliente.getApellidoP() == null ||
+            cliente.getNombre() == null || cliente.getEdad() == null )
+        {
+            return;
+        }
+        list = (List<Cliente>) request.getSession().getAttribute("clientes");
+        if( list == null )
+        {
+            list = new ArrayList<>();
+            request.getSession().setAttribute("clientes", list);
+        }
+        list.add(cliente);
+        
+        
+    }
+    
+    private Integer getCampoInteger( String parametro )
+    {
+        try
+        {
+            return Integer.valueOf(parametro);
+        }
+        catch(NumberFormatException ex)
+        {
+            return  null;
+        }
+    }
 }
