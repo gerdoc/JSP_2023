@@ -8,6 +8,10 @@
         <servlet-name>AgregaCliente</servlet-name>
         <servlet-class>org.gerdoc.AgregaCliente</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AltaAlumno</servlet-name>
+        <servlet-class>org.gerdoc.alumno.AltaAlumno</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ClienteList</servlet-name>
         <url-pattern>/ClienteList</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>AgregaCliente</servlet-name>
         <url-pattern>/AgregaCliente</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AltaAlumno</servlet-name>
+        <url-pattern>/AltaAlumno</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
